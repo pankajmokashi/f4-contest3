@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 
 const Profile = () =>{
 
-    let [result, setResult] = useState("")
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     useEffect (() => {
-        loadData();
-    }, [])
-
-    async function loadData(){
-        fetch('https://dummyjson.com/users/1')
+        fetch(`https://dummyjson.com/users/${user.id}`)
         .then(res => (res.json()))
-        .then(res => setResult(res));
-    }
+        .then(res => {
+            dispatch({ type: 'SAVE_USER_DETAILS', payload: res })
+        });
+    }, [user.id, dispatch])
+
+
 
     return(
         <div className="container">
             {
-                result &&
+                user &&
                 <div className="user-info">
-                    <div>ID: <span>{result.id}</span></div>
-                    <div>Username: <span>{result.username}</span></div>
-                    <div>Email: <span>{result.email}</span></div>
-                    <div>Firstname: <span>{result.firstName}</span></div>
-                    <div>Lastname: <span>{result.lastName}</span></div>
-                    <div>Gender: <span>{result.gender}</span></div>
-                    <div>Address: <span>{result.address.address}, {result.address.city}</span></div>
+                    <div>ID: <span>{user.id}</span></div>
+                    <div>Username: <span>{user.username}</span></div>
+                    <div>Email: <span>{user.email}</span></div>
+                    <div>Firstname: <span>{user.firstName}</span></div>
+                    <div>Lastname: <span>{user.lastName}</span></div>
+                    <div>Gender: <span>{user.gender}</span></div>
                 </div>
             }
         </div>

@@ -1,4 +1,4 @@
-import {sendUsersId, sendUsersData} from "./CounterActions"
+import {sendUsersId, sendUsersData} from "./../Actions/CounterActions"
 
 let initialState = ""
 
@@ -12,3 +12,5 @@ function counterReducer(state = initialState, action){
             return state;
     }
 }
+
+export default counterReducer;

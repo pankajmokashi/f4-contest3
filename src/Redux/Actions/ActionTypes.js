@@ -1,0 +1,5 @@
+
+export const SENDUSERID = "SENDUSERID"
+
+export const SENDUSERDATA= "SENDUSERDATA"
+  

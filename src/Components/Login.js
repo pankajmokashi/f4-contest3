@@ -1,14 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
-    let navigate = useNavigate();
 
+    let navigate = useNavigate();
     let [usernameState, setUsernameState] = useState("")
     let [passwordState, setPasswordState] = useState("")
     let [result, setResult] = useState("")
-
+    const dispatch = useDispatch();
 
    
     function changeHandle() {
@@ -22,11 +22,15 @@ const Login = () => {
             })
         })
         .then(res => (res.json()))
-        .then(res => setResult(res)
-        );
-        setUsernameState("")
-        setPasswordState("")
-        navigate("/profile")
+        .then(res => {
+            setResult(res);
+            if(res.token){
+                dispatch({ type: 'LOGIN_SUCCESS', payload: res });
+                navigate("/profile");
+            }
+        });
+        setUsernameState("");
+        setPasswordState("");
         }
         else{
             setResult({message: "Enter All Fields."})
@@ -53,8 +57,7 @@ return (
                 <a className="link" href="#login-div">Forgot your password?</a>
             </div>
             {
-                result.token ?
-                <div className="success">Successfully Logged In. {result.id}</div> :
+                result.message &&
                 <div className="error">{result.message}</div>
             }
         </div>
